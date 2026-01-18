@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>School Space Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;font-family:Segoe UI}
+body{
+  margin:0;height:100vh;overflow:hidden;
+  background:radial-gradient(circle at top,#0a1a2f,#000);
+  color:white;
+}
+.star{
+  position:absolute;width:2px;height:2px;
+  background:cyan;border-radius:50%;
+  animation:fall linear infinite;
+}
+@keyframes fall{from{transform:translateY(-10vh)} to{transform:translateY(110vh)}}
+.center{
+  height:100vh;display:flex;
+  justify-content:center;align-items:center;
+  padding:10px;
+}
+.card{
+  width:380px;padding:25px;
+  background:rgba(0,0,0,.65);
+  border-radius:18px;
+  box-shadow:0 0 30px cyan;
+}
+.hidden{display:none}
+input,button{
+  width:100%;padding:12px;margin:10px 0;
+  border-radius:10px;border:1px solid cyan;
+  background:transparent;color:white;
+}
+button{
+  background:cyan;color:black;font-weight:bold;cursor:pointer;
+}
+.success{
+  text-align:center;font-size:26px;color:#00ff99;
+  animation:pulse 1s infinite alternate;
+}
+@keyframes pulse{from{opacity:.5}to{opacity:1}}
+.gallery img{
+  width:100%;border-radius:10px;margin:6px 0;
+}
+
+/* ===== RESPONSIVE HP ===== */
+@media (max-width: 600px){
+  .card{
+    width:95%;
+    padding:20px;
+    border-radius:16px;
+  }
+  h2,h3{
+    font-size:20px;
+  }
+  input,button{
+    padding:14px;
+    font-size:16px;
+  }
+  .success{
+    font-size:22px;
+  }
+  .gallery{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .gallery img{
+    width:100%;
+    height:auto;
+  }
+}
+</style>
+</head>
+<body>
+
+<script>
+// animasi bintang
+for(let i=0;i<150;i++){
+  let s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"vw";
+  s.style.animationDuration=(Math.random()*4+3)+"s";
+  document.body.appendChild(s);
+}
+</script>
+
+<div class="center">
+
+<!-- LOGIN -->
+<div class="card" id="loginBox">
+  <h2>LOGIN SEKOLAH</h2>
+  <input id="email" placeholder="Email">
+  <input id="phone" placeholder="Nomor Telepon">
+  <button onclick="login()">LOGIN</button>
+</div>
+
+<!-- LOGIN SUKSES -->
+<div class="card hidden" id="successBox">
+  <div class="success">✔ LOGIN SUKSES</div>
+</div>
+
+<!-- HALAMAN SEKOLAH NORMAL -->
+<div class="card hidden" id="schoolBox">
+  <h3>FASILITAS SEKOLAH</h3>
+  <div class="gallery">
+    <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b">
+    <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754">
+    <img src="https://images.unsplash.com/photo-1607237138185-eedd9c632b0b">
+    <img src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238">
+  </div>
+  <p style="text-align:center">Sekolah Modern & Nyaman</p>
+</div>
+
+<!-- HALAMAN RAHASIA / WEB 2 -->
+<div class="card hidden" id="secretBox">
+  <h3>HALAMAN RAHASIA</h3>
+  <div id="loggedUsers"></div>
+</div>
+
+</div>
+
+<script>
+const emailInput=document.getElementById("email");
+const phoneInput=document.getElementById("phone");
+const loginBox=document.getElementById("loginBox");
+const successBox=document.getElementById("successBox");
+const schoolBox=document.getElementById("schoolBox");
+const secretBox=document.getElementById("secretBox");
+const loggedUsers=document.getElementById("loggedUsers");
+
+// simpan login users di localStorage
+let users = JSON.parse(localStorage.getItem("users") || "[]");
+
+function login(){
+  const email=emailInput.value.trim();
+  const phone=phoneInput.value.trim();
+
+  if(!email || !phone){
+    alert("Email dan nomor wajib diisi");
+    return;
+  }
+
+  // tambahkan user baru
+  users.push({email, phone});
+  localStorage.setItem("users", JSON.stringify(users));
+
+  loginBox.classList.add("hidden");
+  successBox.classList.remove("hidden");
+
+  setTimeout(()=>{
+    successBox.classList.add("hidden");
+
+    // jika kode rahasia
+    if(email==="Azmi" && phone==="123"){
+      secretBox.classList.remove("hidden");
+      // tampilkan semua user yg login
+      let html="";
+      users.forEach(u=>{
+        html+=`<p>Email: ${u.email} | Nomor: ${u.phone}</p>`;
+      });
+      loggedUsers.innerHTML=html;
+    } else {
+      schoolBox.classList.remove("hidden");
+    }
+  },1500);
+}
+</script>
+
+</body>
+</html>

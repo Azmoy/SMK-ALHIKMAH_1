@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Admin Login Monitor</title>
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#0b0f1a;
+  color:white;
+}
+
+h2{
+  text-align:center;
+  color:cyan;
+}
+
+table{
+  width:80%;
+  margin:40px auto;
+  border-collapse:collapse;
+  background:rgba(0,0,0,0.6);
+}
+
+th, td{
+  border:1px solid #333;
+  padding:12px;
+  text-align:center;
+}
+
+th{
+  background:rgba(0,255,255,0.2);
+}
+</style>
+</head>
+
+<body>
+
+<h2>DATA LOGIN</h2>
+
+<table>
+<thead>
+<tr>
+  <th>Email</th>
+  <th>Waktu Login</th>
+  <th>Nomor Telepon</th>
+</tr>
+</thead>
+
+<tbody id="dataLogin"></tbody>
+</table>
+
+<script>
+// ambil data dari Website 1
+const email = localStorage.getItem("loginEmail");
+const phone = localStorage.getItem("loginPhone");
+
+const tbody = document.getElementById("dataLogin");
+
+if(email && phone){
+  tbody.innerHTML = `
+    <tr>
+      <td>${email}</td>
+      <td>${new Date().toLocaleString()}</td>
+      <td>${phone}</td>
+    </tr>
+  `;
+}else{
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="3">Belum ada data login</td>
+    </tr>
+  `;
+}
+</script>
+
+</body>
+</html>
